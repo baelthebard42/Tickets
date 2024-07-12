@@ -1,4 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+import { RequestValidationError } from "../errors/request-validation-error";
+import { DBConnectionError } from "../errors/db-connection-error";
+import { CustomError } from "../errors/custom-errors";
 
 export const errorHandler = (
   err: Error,
@@ -6,9 +9,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("Something went b;aa", err);
-
-  res.status(400).send({
-    message: err.message,
-  });
+  if (err instanceof CustomError) {
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
+  }
 };
