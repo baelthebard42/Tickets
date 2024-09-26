@@ -6,6 +6,7 @@ import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
+import mongoose from "mongoose";
 
 const app = express();
 app.use(json());
@@ -13,7 +14,7 @@ app.use(json());
 app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
-app.use(signupRouter) ;
+app.use(signupRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
@@ -21,6 +22,15 @@ app.all("*", () => {
 
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log("Listening on 3000");
-});
+const start = async () => {
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth"); // clusterIP of the db service we created before
+  } catch (err) {
+    console.error(err);
+  }
+  app.listen(3000, () => {
+    console.log("Listening on 3000");
+  });
+};
+
+start();
