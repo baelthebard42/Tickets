@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/request-validation-error";
+import { User } from "../models/User";
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("Pass between 4 and 20"),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -23,7 +24,17 @@ router.post(
 
     const { email, password } = req.body;
 
-    res.send({ message: "User account creation sucessful" });
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      console.log("Alreaady makde");
+      return res.send({});
+    }
+
+    const user = User.build({ email, password });
+    await user.save();
+
+    res.status(201).send({ message: "User account creation sucessful" });
   }
 );
 
