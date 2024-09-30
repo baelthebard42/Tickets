@@ -1,7 +1,8 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/request-validation-error";
 import { User } from "../models/User";
+import { BadRequestError } from "../errors/badrequesterror";
 
 const router = express.Router();
 
@@ -15,26 +16,30 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("Pass between 4 and 20"),
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       throw new RequestValidationError(errors.array());
     }
 
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        console.log("Alreaady makde");
+        throw new BadRequestError("Email already in use");
+      }
 
-    if (existingUser) {
-      console.log("Alreaady makde");
-      return res.send({});
+      const user = User.build({ email, password });
+      await user.save();
+      res
+        .status(201)
+        .send({ message: "User account creation sucessful", user: user });
+    } catch (err) {
+      next(err);
     }
-
-    const user = User.build({ email, password });
-    await user.save();
-
-    res.status(201).send({ message: "User account creation sucessful" });
   }
 );
 
