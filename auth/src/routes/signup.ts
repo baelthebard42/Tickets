@@ -4,6 +4,7 @@ import { RequestValidationError } from "../errors/request-validation-error";
 import { User } from "../models/User";
 import { BadRequestError } from "../errors/badrequesterror";
 import jwt from "jsonwebtoken";
+import { validateRequest } from "../middlewares/validate-request";
 
 const router = express.Router();
 
@@ -17,13 +18,8 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("Pass between 4 and 20"),
   ],
+  validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     try {
       const { email, password } = req.body;
 
