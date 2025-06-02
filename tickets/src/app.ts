@@ -1,9 +1,9 @@
 import express from "express";
 import { json } from "body-parser";
-
-import { errorHandler } from "@anjal_tickets/common";
+import { currentUser, errorHandler } from "@anjal_tickets/common";
 import { NotFoundError } from "@anjal_tickets/common";
 import cookieSession from "cookie-session";
+import { createTicketRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", true); //traffic is sent to the app through ingress nginx
@@ -14,6 +14,10 @@ app.use(
     secure: process.env.NODE_ENV !== "test", //cookies are sent only over https connection
   })
 );
+
+app.use(currentUser);
+
+app.use(createTicketRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
