@@ -5,7 +5,6 @@ import { NotFoundError } from "@anjal_tickets/common";
 import cookieSession from "cookie-session";
 import { createTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";
-import "express-async-errors";
 import { indexTicketRouter } from "./routes";
 import { updateTicketRouter } from "./routes/update";
 
