@@ -9,6 +9,8 @@ declare global {
   var signin: () => string[]; //i.e returns an array of strings after promise is resolved
 }
 
+jest.mock("../nats-wrapper");
+
 let mongo: any;
 beforeAll(async () => {
   //before any test has run
@@ -20,6 +22,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   //before each test
   const collections = await mongoose.connection.db?.collections();
 
