@@ -4,6 +4,6 @@ import {
   Subjects,
 } from "@anjal_tickets/common";
 
-export class OrderCreatedPublisher extends Publisher<OrderCancelledEvent> {
+export class OrderCancelledPublisher extends Publisher<OrderCancelledEvent> {
   subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
 }
