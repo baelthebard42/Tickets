@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
 
   {
     toJSON: {
-      transform(doc, ret) {
+      transform(doc, ret: any) {
         // doc is the original document (hydrated) while ret is the js object equivalent of doc
         ret.id = ret._id;
         delete ret._id;
