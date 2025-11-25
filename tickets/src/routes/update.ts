@@ -4,6 +4,7 @@ import {
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from "@anjal_tickets/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
@@ -26,6 +27,10 @@ router.put(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId){
+      throw new BadRequestError("Ticket is reserved and reserved tickets cant be edited")
     }
 
     if (ticket.userId !== req.currentUser!.id) {
