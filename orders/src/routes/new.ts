@@ -40,8 +40,8 @@ router.post(
     //check if the order exists already
 
     const isReserved = await ticket.isReserved();
-    console.log(isReserved);
-    if (!isReserved) {
+    console.log("ticket is ", isReserved);
+    if (isReserved) {
       throw new BadRequestError("Ticket already reserved");
     }
 
