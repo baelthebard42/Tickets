@@ -52,3 +52,12 @@ build:
           - src: "src/**/*.ts"
             dest: .
 
+    - image: baelthebard42/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+

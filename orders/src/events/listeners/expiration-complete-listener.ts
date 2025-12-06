@@ -13,7 +13,7 @@ queueGroupName = queueGroupName
 async onMessage(data: ExpirationCompleteEvent['data'], msg: Message){
 
     const order = await Order.findById(data.orderId).populate('ticket')
-
+  // console.log("Expired event received for order ", data.orderId)
 if (!order) {
     throw new Error("Order not found")
 }
