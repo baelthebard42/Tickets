@@ -67,3 +67,5 @@ orderSchema.statics.build = (attrs: OrderAttrs) => {
 }
 
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema) // links all together
+
+export {Order}
