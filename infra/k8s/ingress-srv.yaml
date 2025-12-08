@@ -41,3 +41,11 @@ spec:
                 name: client-srv
                 port:
                   number: 3000
+          
+          - path: /api/payments/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payments-srv
+                port:
+                  number: 3000

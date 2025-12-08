@@ -17,7 +17,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent>{
             orderId: data.id
         }, 
         {
-            delay: 10*1000
+            delay: 1000*1000
         }
     )
 

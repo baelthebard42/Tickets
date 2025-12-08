@@ -3,6 +3,7 @@ import { json } from "body-parser";
 import { currentUser, errorHandler } from "@anjal_tickets/common";
 import { NotFoundError } from "@anjal_tickets/common";
 import cookieSession from "cookie-session";
+import { createChargeRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", true); //traffic is sent to the app through ingress nginx
@@ -15,6 +16,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(createChargeRouter)
 
 
 
