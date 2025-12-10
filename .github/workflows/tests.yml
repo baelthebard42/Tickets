@@ -1,0 +1,12 @@
+name: tests
+
+on: #when we want to run this 
+  pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2 # access all code in runner machine
+     - run: cd auth && npm i && npm run test:ci
+    
