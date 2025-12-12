@@ -45,7 +45,7 @@ it("returns a 401 if the user does not own the ticket", async () => {
     .expect(401);
 });
 
-it("returns a 400 if the user provides an invalid title or price", async () => {
+it("returns a 405 if the user provides an invalid title or price", async () => {
   const cookie = global.signin();
 
   const response = await request(app)
@@ -63,7 +63,7 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
       title: "",
       price: 20,
     })
-    .expect(400);
+    .expect(405);
 
   await request(app)
     .put(`/api/tickets/${response.body.id}`)
@@ -72,7 +72,7 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
       title: "alskdfjj",
       price: -10,
     })
-    .expect(400);
+    .expect(405);
 });
 
 it("updates the ticket provided valid inputs", async () => {

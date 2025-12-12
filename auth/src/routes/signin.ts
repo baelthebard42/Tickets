@@ -5,6 +5,9 @@ import { validateRequest, BadRequestError } from '@anjal_tickets/common';
 
 import { Password } from '../services/password';
 import { User } from '../models/User';
+import 'express-async-errors';
+
+
 
 const router = express.Router();
 
@@ -22,10 +25,15 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    console.log("email received: ", email)
 
     const existingUser = await User.findOne({ email });
+
+  //  console.log("passed here")
+   // console.log("the user is: ",existingUser)
     if (!existingUser) {
-      throw new BadRequestError('Invalid credentials');
+  //    console.log("passed here2")
+      throw new BadRequestError('User doesnt exist');
     }
 
     const passwordsMatch = await Password.compare(
@@ -33,7 +41,7 @@ router.post(
       password
     );
     if (!passwordsMatch) {
-      throw new BadRequestError('Invalid Credentials');
+      throw new BadRequestError('Invalid Credentials (password)');
     }
 
     // Generate JWT

@@ -10,6 +10,7 @@ import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 import { natsWrapper } from "../nats-wrapper";
+import 'express-async-errors'
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.put(
     body("price")
       .isFloat({ gt: 0 })
       .withMessage("Price must be provided and > 0"),
-  ],
+  ], validateRequest,
   async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.params.id);
 

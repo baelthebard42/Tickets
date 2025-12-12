@@ -2,10 +2,12 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import { Order, OrderStatus } from "../../models/order";
+import mongoose from "mongoose";
 
 it("marks an order as cancelled", async () => {
   // create a ticket with Ticket Model
   const ticket = Ticket.build({
+     id: new mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   });
@@ -28,6 +30,8 @@ it("marks an order as cancelled", async () => {
 
   // expectation to make sure the thing is cancelled
   const updatedOrder = await Order.findById(order.id);
+
+  console.log(updatedOrder!.status)
 
   expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
 });
