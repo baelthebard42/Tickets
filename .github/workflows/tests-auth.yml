@@ -1,7 +1,9 @@
 name: tests-auth
 
 on: #when we want to run this 
-  pull_request
+  pull_request:
+   paths: # run only if changes are made inside this
+    - 'auth/**'
 
 jobs:
   build:
