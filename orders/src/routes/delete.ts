@@ -28,6 +28,7 @@ router.delete(
     }
 
     order.status = OrderStatus.Cancelled;
+    await order.save()
 
     new OrderCancelledPublisher(natsWrapper.client).publish({
       id: order.id,
@@ -36,8 +37,8 @@ router.delete(
         id: order.ticket.id,
       },
     });
-
-    res.send({});
+console.log("sending 204")
+    res.status(204).send({});
   }
 );
 
