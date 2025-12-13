@@ -3,7 +3,7 @@ import { app } from "./app";
 
 const start = async () => {
 
-  console.log("Starting up...in 1 2 3 goo")
+  console.log("Starting up...in 1 2 3 4goo")
   if (!process.env.JWT_KEY) {
     throw new Error("No env vars loaded");
   }
